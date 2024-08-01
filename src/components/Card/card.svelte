@@ -7,7 +7,7 @@
     "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 
   // QuerySelectors
-  let input ={value:""};
+  let input = { value: "" };
   let city = "";
   let buscar = false;
   let response = fetch(apiUrl + `London&appid=${apiKey}`)
@@ -16,36 +16,35 @@
       console.log(apiResponse);
       return apiResponse;
     });
-console.log("here");
+  console.log("here");
   $: {
     if (buscar) {
       fetch(apiUrl + `${city}&appid=${apiKey}`)
-         .then((res) =>{
-            if(!res.ok){
-              throw new Error('Not Found');
-            }
-            buscar=false
-            return res.json()
-         })
-         .then((apiResponse) => {
-           response = apiResponse;
-           buscar=false
-           return response;
-         })
-      }
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Not Found");
+          }
+          buscar = false;
+          return res.json();
+        })
+        .then((apiResponse) => {
+          response = apiResponse;
+          buscar = false;
+          return response;
+        });
     }
-  
+  }
 
   // Evento botón
   function eventoBoton(ciudadEnviada = "") {
     city = ciudadEnviada;
-    buscar=true
+    buscar = true;
   }
 
-  function presionarEnter(e) :void{
-    if(e.key == "Enter"){
-      eventoBoton(input.value)
-      input.value="";
+  function presionarEnter(e): void {
+    if (e.key == "Enter") {
+      eventoBoton(input.value);
+      input.value = "";
     }
   }
 </script>
@@ -53,10 +52,14 @@ console.log("here");
 <div class="card">
   <div class="search">
     <form action="GET"></form>
-    <input type="text" placeholder="Enter city name" spellcheck="false" on:keydown={presionarEnter} bind:this={input}/>
-    <button
-      on:click={() =>
-        eventoBoton(input.value)}
+    <input
+      type="text"
+      placeholder="Enter city name"
+      spellcheck="false"
+      on:keydown={presionarEnter}
+      bind:this={input}
+    />
+    <button on:click={() => eventoBoton(input.value)}
       ><i class="fa-solid fa-magnifying-glass"></i></button
     >
   </div>
